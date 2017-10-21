@@ -25,8 +25,12 @@ char Map[NUM][NUM];
 
 unsigned int Score = 0;
 
+/*用于CommonDisplay函数*/
+bool IfDisplay; 
+
 void Init(void);
-void Display(int,int,int,int,int,int); 
+void Display(int,int,int,int,int,int);
+void CommomDisplay(void);
 char RandCh(void);
 void Master(void);
 int CheckLegal(int*,int*);
@@ -56,11 +60,17 @@ void Init(void)
 			Map[index][index2] = RandCh();
 		}
 	}
+	IfDisplay = false;
 	/*检查有无可消除的*/
+	printf("提示:游戏载入中.");
 	while(CheckYes())
 	{
 		RemoveCh();
+		printf(".");
 	}
+	/*以上，设置IfDisplay为false，CommonDisplay不执行*/
+	system("cls"); 
+	IfDisplay = true;
 }
 
 /*
@@ -180,6 +190,7 @@ int Eliminate(int* X,int*Y)
 	Tmp = Map[X[0]][Y[0]];
 	Map[X[0]][Y[0]] = Map[X[1]][Y[1]];
 	Map[X[1]][Y[1]] = Tmp;
+	CommomDisplay();
 	Score = Score + (Tmp = RemoveCh());
 	/*如果没什么可消除的*/
 	if(!Tmp)
@@ -188,6 +199,7 @@ int Eliminate(int* X,int*Y)
 		Map[X[0]][Y[0]] = Map[X[1]][Y[1]];
 		Map[X[1]][Y[1]] = Tmp;
 	}
+	CommomDisplay();
 	return 0;
 }
 
@@ -235,6 +247,7 @@ int RemoveCh(void)
 			if(MapList[x][y])
 			{
 				Map[x][y] = 0;
+				CommomDisplay();
 				ScoreTimes++;
 			}
 		}
@@ -278,6 +291,8 @@ int ShiftAndRand(void)
 			}
 		}
 	}
+	CommomDisplay();
+	Sleep(100);
 	return 0;
 }
 
@@ -332,6 +347,27 @@ void Display(int x1,int x2,int y1,int y2,int Fingerx,int Fingery)
 		printf("\n\n");
 	}
 	printf("\n Score:%u\n",Score);
+}
+
+/**
+*不带Finger的显示. 
+*/
+void CommomDisplay(void)
+{
+	if(IfDisplay)
+	{
+		int x,y; 
+		system("cls");
+		for(y = 0;y < NUM;y++)
+		{
+			for(x = 0;x < NUM;x++)
+			{
+				printf(" %c  ",Map[x][y]);
+			}
+			printf("\n\n");
+		}
+		printf("\n Score:%u\n",Score);
+	}
 }
 
 /*
