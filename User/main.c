@@ -29,7 +29,7 @@ unsigned int Score = 0;
 bool IfDisplay; 
 
 void Init(void);
-void Display(int,int,int,int,int,int);
+void Display(int，int,int,int,int,int);
 void CommomDisplay(void);
 char RandCh(void);
 void Master(void);
